@@ -1,25 +1,29 @@
- 
-// Holds the state information
-var cache = {
-    '_START': []
-};
 
-var isWord = function(str) {
+function MarkovChain() {
+  this.cache = {'_START': []};
+} 
+
+MarkovChain.prototype.isWord = function(str) {
   return str.match(/\w+/);
 };
 
-var isNotUrl = function(str) {
+MarkovChain.prototype.isNotUrl = function(str) {
   return !str.match(/^http/);
 };
 
-var isNotMention = function(str) {
+MarkovChain.prototype.isNotMention = function(str) {
   return !str.match(/^@/);
 };
 
  
-var ingest = function(input) {
+MarkovChain.prototype.ingest = function(input) {
+  var cache = this.cache;
+
   // Get the source text and split it into words
-  var text = input.split(/\s+/g).filter(isWord).filter(isNotUrl).filter(isNotMention);
+  var text = input.split(/\s+/g)
+             .filter(this.isWord)
+             .filter(this.isNotUrl)
+             .filter(this.isNotMention);
 
   if (!text.length) return;
  
@@ -37,7 +41,8 @@ var ingest = function(input) {
   }
 };
  
-var generate = function(words) {
+MarkovChain.prototype.generate = function(words) {
+  var cache = this.cache;
   var currentWord = '_START';
   var str = '';
   
@@ -64,7 +69,4 @@ var generate = function(words) {
   return str;
 };
 
-module.exports = {
-  ingest: ingest,
-  generate: generate
-};
+module.exports = MarkovChain;

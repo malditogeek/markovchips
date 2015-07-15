@@ -34,12 +34,14 @@ app.get('/markov', function(req, res) {
   
   getUserTweets(username, function(err, tweets) {
     if (err) return res.send('Oops, try again');
-  
+ 
+    var markov = new MarkovChain();
+ 
     tweets.forEach(function(tweet) { 
-      MarkovChain.ingest(tweet.text);
+      markov.ingest(tweet.text);
     });
   
-    var tweet = MarkovChain.generate(words);
+    var tweet = markov.generate(words);
     res.send(tweet);
   });
 });

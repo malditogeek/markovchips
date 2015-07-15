@@ -14,10 +14,12 @@ fs.readFile(fname, function(err, data) {
 
   console.log('Using ' + tweets.length + ' tweets as seed');
 
+  var markov = new MarkovChain();
+
   tweets.forEach(function(tweet) { 
-    MarkovChain.ingest(tweet.text);
+    markov.ingest(tweet.text);
   });
 
-  var tweet = MarkovChain.generate(words);
-  console.log('MarkovChips says:', tweet);
+  var tweet = markov.generate(words);
+  console.log(tweet);
 });
