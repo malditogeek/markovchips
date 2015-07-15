@@ -11,10 +11,15 @@ var isWord = function(str) {
 var isNotUrl = function(str) {
   return !str.match(/^http/);
 };
+
+var isNotMention = function(str) {
+  return !str.match(/^@/);
+};
+
  
 var ingest = function(input) {
   // Get the source text and split it into words
-  var text = input.split(/\s+/g).filter(isWord).filter(isNotUrl);
+  var text = input.split(/\s+/g).filter(isWord).filter(isNotUrl).filter(isNotMention);
 
   if (!text.length) return;
  

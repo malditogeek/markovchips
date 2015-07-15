@@ -9,6 +9,7 @@
   "author": "Mauro Pompilio",
   "license": "MIT",
   "dependencies": {
+    "express": "^4.13.1",
     "twitter": "^1.2.5"
   }
 }

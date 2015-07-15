@@ -11,6 +11,9 @@ fs.readFile(fname, function(err, data) {
   if (err) process.exit(1);
 
   var tweets = JSON.parse(data);
+
+  console.log('Using ' + tweets.length + ' tweets as seed');
+
   tweets.forEach(function(tweet) { 
     MarkovChain.ingest(tweet.text);
   });

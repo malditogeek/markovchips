@@ -7,21 +7,29 @@ var client = new Twitter({
   access_token_secret:  process.env.TWTOKENSECRET
 });
 
+// Max allowed per request
+var count = 200;
+
 var fetch = function fetch(username, cb, max_id, accum) {
   accum = accum || [];
 
   var params = {
     screen_name:  username,
-    count:        200,
+    count:        count,
     max_id:       max_id
   };
 
   client.get('statuses/user_timeline', params, function(err, tweets){
-    if (err) return cb(err);
+    if (err) {
+      console.log('ERR', err);
+      return cb(accum);
+    }
+
+    console.log('Got tweets: ', tweets.length, username);
 
     accum = accum.concat(tweets);
 
-    if (tweets.length === 1) return cb(accum);
+    if (tweets.length <= 1) return cb(accum);
 
     max_id = tweets[tweets.length-1].id;
     fetch(username, cb, max_id, accum);
