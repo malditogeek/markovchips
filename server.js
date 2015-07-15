@@ -6,29 +6,34 @@ var MarkovChain = require('./markov_chain');
 
 var app = express();
 
-app.post('/fetch/:username', function(req,res) {
-  var username = req.params.username;
-  
-  Tweets.fetch(username, function(tweets) {
-    var fname = username + '_tweets.json';
-    var data  = JSON.stringify(tweets);
-  
-    fs.writeFile(fname, data, function(err) {
-      if (err) return res.send('Oops, try again');
-      res.send('Imported ' + tweets.length + ' for ' + username);
-    });
+var getUserTweets = function(username, cb) {
+  var fname = username + '_tweets.json';
+
+  fs.exists(fname, function(exists) {
+    if (exists) {
+      fs.readFile(fname, function(err, data) {
+        if (err) return cb(err);
+        var tweets = JSON.parse(data);
+        cb(null, tweets);
+      });
+    } else {
+      Tweets.fetch(username, function(tweets) {
+        var data  = JSON.stringify(tweets);
+        fs.writeFile(fname, data, function(err) {
+          if (err) return cb(err);
+          cb(null, tweets);
+        });
+      });
+    }
   });
-});
+};
 
 app.get('/markov', function(req, res) {
   var username = req.query.username || req.query.text;
   var words = req.query.words || 21;
-  var fname = username + '_tweets.json';
   
-  fs.readFile(fname, function(err, data) {
+  getUserTweets(username, function(err, tweets) {
     if (err) return res.send('Oops, try again');
-  
-    var tweets = JSON.parse(data);
   
     tweets.forEach(function(tweet) { 
       MarkovChain.ingest(tweet.text);
