@@ -34,6 +34,7 @@ app.get('/markov', function(req, res) {
   
   getUserTweets(username, function(err, tweets) {
     if (err) return res.send('Oops, try again');
+    if (!tweets.length) return res.send('Not enough tweets :(');
  
     var markov = new MarkovChain();
  
