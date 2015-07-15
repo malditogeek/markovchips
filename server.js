@@ -20,8 +20,8 @@ app.post('/fetch/:username', function(req,res) {
   });
 });
 
-app.get('/markov/:username', function(req, res) {
-  var username = req.params.username;
+app.get('/markov', function(req, res) {
+  var username = req.query.username || req.query.text;
   var words = req.query.words || 21;
   var fname = username + '_tweets.json';
   
