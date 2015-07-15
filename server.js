@@ -30,7 +30,7 @@ var getUserTweets = function(username, cb) {
 
 app.get('/markov', function(req, res) {
   var username = req.query.username || req.query.text;
-  var words = req.query.words || 21;
+  var words = parseInt(req.query.words) || 21;
   
   getUserTweets(username, function(err, tweets) {
     if (err) return res.send('Oops, try again');
