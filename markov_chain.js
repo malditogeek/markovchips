@@ -1,4 +1,6 @@
 
+// Implementation taken from http://www.bitsofpancake.com/programming/markov-chain-text-generator/
+
 function MarkovChain() {
   this.cache = {'_START': []};
 } 
