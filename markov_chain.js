@@ -34,6 +34,7 @@ MarkovChain.prototype.ingest = function(input) {
   for (var i = 0; i < text.length - 1; i++) {
     if (!cache[text[i]]) cache[text[i]] = [];
 
+    if (!Array.isArray(cache[text[i]])) return;
     cache[text[i]].push(text[i + 1]);
     
     // If it's the beginning of a sentence, add the next word to the start node too
